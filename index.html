@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jeraine IT Department</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    body {
+      font-family: "Times New Roman", serif;
+      color: #000;
+      max-width: 700px;
+      margin: 40px auto;
+      line-height: 1.6;
+    }
+    h3 {
+      text-align: center;
+      text-decoration: underline;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+    p {
+      text-align: justify;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+    td {
+      padding: 4px;
+      vertical-align: top;
+    }
+    .checkbox {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      border: 1px solid #000;
+      margin-right: 8px;
+    }
+    .filled {
+      background-color: #000 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .underline {
+      display: inline-block;
+      border-bottom: 1px solid #000;
+      min-width: 150px;
+      text-align: center;
+      padding: 0 5px;
+    }
+    .file-section {
+      border: 1px solid #000;
+      margin-top: 20px;
+    }
+    .file-section td {
+      border: 1px solid #000;
+      padding: 6px;
+    }
+    .signature {
+      margin-top: 40px;
+      text-align: right;
+      margin-right: 20px;
+    }
+    .signature-line {
+      border-top: 1px solid #000;
+      width: 200px;
+      margin-left: auto;
+      padding-top: 5px;
+      text-align: center;
+    }
+    .controls {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    input[type="file"], button {
+      padding: 8px;
+      margin: 5px;
+    }
+    button {
+      background-color: #004c91;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #00386d;
+    }
+    @media print {
+      .controls, header, .note {
+        display: none !important;
+      }
+      .filled {
+        background-color: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+    .cic-header {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 10px;
+      gap: 20px;
+    }
+    .cic-logo {
+      width: 400px;
+      height: auto;
+    }
+    .cic-info {
+      font-family: "Arial", sans-serif;
+      line-height: 1.3;
+    }
+    .cic-info p {
+      font-size: 13px;
+      margin: 2px 0 0 0;
+      color: #333;
+    }
+    @media print {
+      .cic-header {
+        margin-bottom: 1px;
+        page-break-inside: avoid;
+      }
+      hr {
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+	<div class="controls">
+		<input type="file" id="fileInput" webkitdirectory multiple accept=".xlsx, .xls, .csv">
+		<button onclick="window.print()">🖨️ Print Transmittal Letter</button>
+	</div>
+	<div class="cic-header">
+		<img src="CIC Logo.png" alt="CIC Logo" class="cic-logo">
+		<div class="cic-info">
+			<p>
+				6F Exchange Corner Building<br>
+				107 V. A. Rufino Street corner Esteban St.,<br>
+				Legaspi Village, Makati City 1229<br>
+				(02) 893-7159 | www.creditinfo.gov.ph
+			</p>
+		</div>
+	</div>
+	<h3>TRANSMITTAL LETTER</h3>
+			<p>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is to confirm that <strong><i><u>Public Safety Mutual Benefit Fund, Inc.</u></i></strong> has successfully uploaded to the FTP Server of the
+				<strong>Credit Information Corporation</strong> on 
+				<span class="underline" id="uploadDate"></span> the contribution data covering the period
+				<span class="underline" id="refPeriod"></span>.
+			</p>
+			<p>
+			&nbsp;&nbsp;&nbsp;&nbsp;Records transmitted are composed of the following: (check the applicable box and indicate the corresponding quantity)
+			</p>
+			<table>
+				<tr><td><strong><u>Subject</u></strong></td><td></td><td></td></tr>
+				<tr><td><div class="checkbox filled"></div> Individual</td><td></td><td><span class="underline" id="idCount"></span></td></tr>
+				<tr><td><div class="checkbox"></div> Company</td><td></td><td><span class="underline"></span></td></tr>
+			</table>
+			<table>
+				<tr><td><strong><u>Contract</u></strong></td><td></td><td></td></tr>
+				<tr><td><div class="checkbox filled"></div> Installment</td><td></td><td><span class="underline" id="ciCount"></span></td></tr>
+				<tr><td><div class="checkbox"></div> Non-installment</td><td></td><td><span class="underline"></span></td></tr>
+				<tr><td><div class="checkbox"></div> Credit Card</td><td></td><td><span class="underline"></span></td></tr>
+				<tr><td><div class="checkbox"></div> Utility / Services</td><td></td><td><span class="underline"></span></td></tr>
+			</table>
+			<table>
+				<tr>
+					<td><div class="checkbox filled"></div> REGULAR MONTHLY SUBMISSION / HISTORICAL DATA</td>
+					<td><div class="checkbox"></div> CORRECTION FILE FOR THE MONTH OF _________________</td>
+				</tr>
+			</table>
+			<p><i>Please indicate the File Name and the Reference Date inside the contribution file.</i></p>
+			<table class="file-section">
+				<tr><td><strong>FILE NAME</strong></td><td><span id="fileName">__________________________</span></td></tr>
+				<tr><td><strong>FILE REFERENCE DATE</strong></td><td><span id="fileRef">__________________________</span></td></tr>
+			</table>
+		<div class="signature">
+			<div class="signature-line">
+			  MALECAH M. BARING
+			  <div>Authorized Representative</div>
+			</div><br>
+			<div class="signature-line">
+			  <div>Date</div>
+			</div>
+		</div>
+
+<script>
+		function displayFileName(file) {
+			if (!file) return;
+			document.getElementById("fileName").textContent = file.name;
+			}
+
+		function setUploadDateFromFolder(files) {
+			if (!files || files.length === 0) {
+			  document.getElementById("uploadDate").textContent = "No file selected";
+			  return;
+			}
+
+		let latestFile = files[0];
+			for (const f of files) {
+			  if (f.lastModified > latestFile.lastModified) {
+				latestFile = f;
+			  }
+			}
+
+		const lastModifiedDate = new Date(latestFile.lastModified);
+		const formattedDate = lastModifiedDate.toLocaleDateString("en-US", {
+			  month: "long",
+			  day: "numeric",
+			  year: "numeric"
+			});
+
+			document.getElementById("uploadDate").textContent = formattedDate;
+			console.log("Latest file:", latestFile.name, "| Modified:", formattedDate);
+		  }
+
+		function setFolderName(files) {
+			let folderName = "";
+
+			if (files.length > 0 && files[0].webkitRelativePath) {
+			  folderName = files[0].webkitRelativePath.split("/")[0];
+			} else {
+			  const nameParts = files[0].name.split("_");
+			  folderName = nameParts.length > 1 ? nameParts[1] : "Unknown";
+			}
+
+			document.getElementById("refPeriod").textContent = folderName;
+			document.getElementById("fileRef").textContent = folderName;
+		  }
+
+		function countIDandCI(file) {
+			const reader = new FileReader();
+			reader.onload = function (e) {
+			const data = e.target.result;
+			let rows = [];
+
+			if (file.name.endsWith(".csv")) {
+				rows = data.split(/\r?\n/).map(r => r.split(",").map(v => v.trim()));
+			  } else {
+				const arr = new Uint8Array(e.target.result);
+				const workbook = XLSX.read(arr, { type: "array" });
+				const sheetName = workbook.SheetNames[0];
+				const sheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 });
+				rows = sheet;
+			  }
+
+			  let idCount = 0;
+			  let ciCount = 0;
+			  rows.forEach(row => {
+				if (!row[0]) return;
+				const val = row[0].toString().trim().toUpperCase();
+				if (val === "ID") idCount++;
+				if (val === "CI") ciCount++;
+			  });
+
+			  document.getElementById("idCount").textContent = idCount.toLocaleString();
+			  document.getElementById("ciCount").textContent = ciCount.toLocaleString();
+			};
+
+			if (file.name.endsWith(".csv")) reader.readAsText(file);
+			else reader.readAsArrayBuffer(file);
+		  }
+
+		document.getElementById("fileInput").addEventListener("change", function (event) {
+		const files = event.target.files;
+		if (!files.length) return;
+
+			displayFileName(files[0]);
+			setUploadDateFromFolder(files);
+			setFolderName(files);   
+			countIDandCI(files[0]);
+		  });
+</script>
+</body>
+</html>
