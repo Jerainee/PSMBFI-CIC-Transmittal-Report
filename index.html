@@ -7,11 +7,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     body {
-      font-family: "Times New Roman", serif;
+      font-family: "Arial", serif;
       color: #000;
       max-width: 700px;
       margin: 40px auto;
-      line-height: 1.6;
+      line-height: 1.2;
     }
     h3 {
       text-align: center;
@@ -26,7 +26,6 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 10px;
       margin-bottom: 20px;
     }
     td {
@@ -52,16 +51,16 @@
       text-align: center;
       padding: 0 5px;
     }
+	
     .file-section {
       border: 1px solid #000;
-      margin-top: 20px;
     }
     .file-section td {
       border: 1px solid #000;
       padding: 6px;
     }
     .signature {
-      margin-top: 40px;
+      margin-top: 60px;
       text-align: right;
       margin-right: 20px;
     }
@@ -129,11 +128,50 @@
         margin: 0;
       }
     }
+	
+	table.Subject,
+	table.Contract {
+	  margin-left: auto;
+	  margin-right: auto;
+	  width: 80%;
+	  border-collapse: collapse;
+	  table-layout: fixed;
+	}
+
+	table.Subject td,
+	table.Contract td {
+	  padding: 6px 10px;
+	  vertical-align: middle;
+	}
+
+	table.Subject td:nth-child(1),
+	table.Contract td:nth-child(1) {
+	  width: 50%;
+	}
+
+	table.Subject td:nth-child(2),
+	table.Contract td:nth-child(2) {
+	  width: 10%;
+	}
+
+	table.Subject td:nth-child(3),
+	table.Contract td:nth-child(3) {
+	  width: 40%;
+	  text-align: center;
+	}
+
+	.underline {
+	  display: inline-block;
+	  border-bottom: 1px solid #000;
+	  min-width: 120px;
+	  text-align: center;
+	  padding: 0 5px;
+	}
   </style>
 </head>
 <body>
 	<div class="controls">
-		<input type="file" id="fileInput" multiple accept=".xlsx, .xls, .csv">
+		<input type="file" id="fileInput" webkitdirectory multiple accept=".xlsx, .xls, .csv">
 		<button onclick="window.print()">🖨️ Print Transmittal Letter</button>
 	</div>
 	<div class="cic-header">
@@ -157,17 +195,17 @@
 			<p>
 			&nbsp;&nbsp;&nbsp;&nbsp;Records transmitted are composed of the following: (check the applicable box and indicate the corresponding quantity)
 			</p>
-			<table>
+			<table class="Subject">
 				<tr><td><strong><u>Subject</u></strong></td><td></td><td></td></tr>
-				<tr><td><div class="checkbox filled"></div> Individual</td><td></td><td><span class="underline" id="idCount"></span></td></tr>
-				<tr><td><div class="checkbox"></div> Company</td><td></td><td><span class="underline"></span></td></tr>
+				<tr><td><div class="checkbox filled"></div> Individual</td><td><span class="underline" id="idCount"></span></td></tr>
+				<tr><td><div class="checkbox"></div> Company</td><td><span class="underline"></span></td></tr>
 			</table>
-			<table>
+			<table class="Contract">
 				<tr><td><strong><u>Contract</u></strong></td><td></td><td></td></tr>
-				<tr><td><div class="checkbox filled"></div> Installment</td><td></td><td><span class="underline" id="ciCount"></span></td></tr>
-				<tr><td><div class="checkbox"></div> Non-installment</td><td></td><td><span class="underline"></span></td></tr>
-				<tr><td><div class="checkbox"></div> Credit Card</td><td></td><td><span class="underline"></span></td></tr>
-				<tr><td><div class="checkbox"></div> Utility / Services</td><td></td><td><span class="underline"></span></td></tr>
+				<tr><td><div class="checkbox filled"></div> Installment</td><td><span class="underline" id="ciCount"></span></td></tr>
+				<tr><td><div class="checkbox"></div> Non-installment</td><td><span class="underline"></span></td></tr>
+				<tr><td><div class="checkbox"></div> Credit Card</td><td><span class="underline"></span></td></tr>
+				<tr><td><div class="checkbox"></div> Utility / Services</td><td><span class="underline"></span></td></tr>
 			</table>
 			<table>
 				<tr>
@@ -175,16 +213,20 @@
 					<td><div class="checkbox"></div> CORRECTION FILE FOR THE MONTH OF _________________</td>
 				</tr>
 			</table>
-			<p><i>Please indicate the File Name and the Reference Date inside the contribution file.</i></p>
+			
+			<i>Please indicate the File Name and the Reference Date inside the contribution file.</i>
 			<table class="file-section">
-				<tr><td><strong>FILE NAME</strong></td><td><span id="fileName">__________________________</span></td></tr>
-				<tr><td><strong>FILE REFERENCE DATE</strong></td><td><span id="fileRef">__________________________</span></td></tr>
+				<tr><td><strong>FILE NAME</strong></td><td><span id="fileName">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				</span></td></tr>
+				<tr><td><strong>FILE REFERENCE DATE</strong></td><td><span id="fileRef">
+				</span></td></tr>
 			</table>
 		<div class="signature">
 			<div class="signature-line">
 			  MALECAH M. BARING
 			  <div>Authorized Representative</div>
-			</div><br>
+			</div><br><br>
 			<div class="signature-line">
 			  <div>Date</div>
 			</div>
@@ -279,4 +321,3 @@
 </script>
 </body>
 </html>
-
