@@ -19,19 +19,23 @@
       font-weight: bold;
       margin-bottom: 30px;
     }
+	
     p {
       text-align: justify;
       margin-bottom: 20px;
     }
+	
     table {
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 20px;
     }
+	
     td {
       padding: 4px;
       vertical-align: top;
     }
+	
     .checkbox {
       display: inline-block;
       width: 15px;
@@ -39,11 +43,13 @@
       border: 1px solid #000;
       margin-right: 8px;
     }
+	
     .filled {
       background-color: #000 !important;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
     }
+	
     .underline {
       display: inline-block;
       border-bottom: 1px solid #000;
@@ -55,15 +61,18 @@
     .file-section {
       border: 1px solid #000;
     }
+	
     .file-section td {
       border: 1px solid #000;
       padding: 6px;
     }
+	
     .signature {
       margin-top: 60px;
       text-align: right;
       margin-right: 20px;
     }
+	
     .signature-line {
       border-top: 1px solid #000;
       width: 200px;
@@ -71,14 +80,17 @@
       padding-top: 5px;
       text-align: center;
     }
+	
     .controls {
       text-align: center;
       margin-bottom: 25px;
     }
+	
     input[type="file"], button {
       padding: 8px;
       margin: 5px;
     }
+	
     button {
       background-color: #004c91;
       color: white;
@@ -89,6 +101,7 @@
     button:hover {
       background-color: #00386d;
     }
+	
     @media print {
       .controls, header, .note {
         display: none !important;
@@ -99,6 +112,7 @@
         print-color-adjust: exact;
       }
     }
+	
     .cic-header {
       display: flex;
       align-items: center;
@@ -106,19 +120,23 @@
       margin-bottom: 10px;
       gap: 20px;
     }
+	
     .cic-logo {
       width: 400px;
       height: auto;
     }
+	
     .cic-info {
       font-family: "Arial", sans-serif;
       line-height: 1.3;
     }
+	
     .cic-info p {
       font-size: 13px;
       margin: 2px 0 0 0;
       color: #333;
     }
+	
     @media print {
       .cic-header {
         margin-bottom: 1px;
@@ -167,12 +185,56 @@
 	  text-align: center;
 	  padding: 0 5px;
 	}
+	
+	.btn {
+  background-color: #004c91;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 16px;
+  margin: 5px;
+  font-size: 15px;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-family: "Arial", sans-serif;
+}
+
+.btn:hover {
+  background-color: #00386d;
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  background-color: #002f59;
+}
+
+/* Folder info display */
+.folder-info {
+  font-size: 14px;
+  font-style: italic;
+  color: #333;
+  margin-top: 8px;
+}
+
+/* Hide the actual file input */
+input[type="file"] {
+  display: none;
+}
+
+.controls {
+  text-align: center;
+  margin-bottom: 25px;
+}
   </style>
 </head>
 <body>
 	<div class="controls">
+		<label for="fileInput" class="btn">📁 Choose Folder</label>
 		<input type="file" id="fileInput" webkitdirectory multiple accept=".xlsx, .xls, .csv">
-		<button onclick="window.print()">🖨️ Print Transmittal Letter</button>
+		<button class="btn" onclick="window.print()">🖨️ Print Transmittal Letter</button>
+		<div id="folderNameDisplay" class="folder-info" style="display: none;"></div>
 	</div>
 	<div class="cic-header">
 		<img src="CIC Logo.png" alt="CIC Logo" class="cic-logo">
@@ -222,102 +284,133 @@
 				<tr><td><strong>FILE REFERENCE DATE</strong></td><td><span id="fileRef">
 				</span></td></tr>
 			</table>
-		<div class="signature">
-			<div class="signature-line">
-			  MALECAH M. BARING
-			  <div>Authorized Representative</div>
-			</div><br><br>
-			<div class="signature-line">
-			  <div>Date</div>
-			</div>
+	<div class="signature">
+		<div class="signature-line">
+			MALECAH M. BARING
+			<div>Authorized Representative</div>
+		</div><br><br>
+		<div class="signature-line">
+			<div>Date</div>
 		</div>
+	</div>
 
 <script>
-		function displayFileName(file) {
-			if (!file) return;
-			document.getElementById("fileName").textContent = file.name;
-			}
+	function displayFileName(file) {
+		if (!file) return;
+		document.getElementById("fileName").textContent = file.name;
+	  }
 
-		function setUploadDateFromFolder(files) {
-			if (!files || files.length === 0) {
-			  document.getElementById("uploadDate").textContent = "No file selected";
-			  return;
-			}
+	  function setUploadDateFromFolder(files) {
+		if (!files || files.length === 0) {
+		  document.getElementById("uploadDate").textContent = "No file selected";
+		  return;
+		}
 
 		let latestFile = files[0];
-			for (const f of files) {
-			  if (f.lastModified > latestFile.lastModified) {
-				latestFile = f;
-			  }
-			}
+		for (const f of files) {
+		  if (f.lastModified > latestFile.lastModified) {
+			latestFile = f;
+		  }
+		}
 
 		const lastModifiedDate = new Date(latestFile.lastModified);
 		const formattedDate = lastModifiedDate.toLocaleDateString("en-US", {
-			  month: "long",
-			  day: "numeric",
-			  year: "numeric"
-			});
+		  month: "long",
+		  day: "numeric",
+		  year: "numeric"
+		});
 
-			document.getElementById("uploadDate").textContent = formattedDate;
-			console.log("Latest file:", latestFile.name, "| Modified:", formattedDate);
+		document.getElementById("uploadDate").textContent = formattedDate;
+		console.log("Latest file:", latestFile.name, "| Modified:", formattedDate);
+	  }
+
+	function setFolderName(files) {
+		let folderName = "";
+
+		if (files.length > 0 && files[0].webkitRelativePath) {
+		  folderName = files[0].webkitRelativePath.split("/")[0];
+		} else {
+		  const nameParts = files[0].name.split("_");
+		  folderName = nameParts.length > 1 ? nameParts[1] : "Unknown";
+		}
+
+		document.getElementById("refPeriod").textContent = folderName;
+		document.getElementById("fileRef").textContent = folderName;
+	}
+
+	function countIDandCI(file) {
+		const reader = new FileReader();
+		reader.onload = function (e) {
+		  const data = e.target.result;
+		  let rows = [];
+
+		  if (file.name.endsWith(".csv")) {
+			rows = data.split(/\r?\n/).map(r => r.split(",").map(v => v.trim()));
+		  } else {
+			const arr = new Uint8Array(e.target.result);
+			const workbook = XLSX.read(arr, { type: "array" });
+			const sheetName = workbook.SheetNames[0];
+			const sheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 });
+			rows = sheet;
 		  }
 
-		function setFolderName(files) {
-			let folderName = "";
-
-			if (files.length > 0 && files[0].webkitRelativePath) {
-			  folderName = files[0].webkitRelativePath.split("/")[0];
-			} else {
-			  const nameParts = files[0].name.split("_");
-			  folderName = nameParts.length > 1 ? nameParts[1] : "Unknown";
-			}
-
-			document.getElementById("refPeriod").textContent = folderName;
-			document.getElementById("fileRef").textContent = folderName;
-		  }
-
-		function countIDandCI(file) {
-			const reader = new FileReader();
-			reader.onload = function (e) {
-			const data = e.target.result;
-			let rows = [];
-
-			if (file.name.endsWith(".csv")) {
-				rows = data.split(/\r?\n/).map(r => r.split(",").map(v => v.trim()));
-			  } else {
-				const arr = new Uint8Array(e.target.result);
-				const workbook = XLSX.read(arr, { type: "array" });
-				const sheetName = workbook.SheetNames[0];
-				const sheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 });
-				rows = sheet;
-			  }
-
-			  let idCount = 0;
-			  let ciCount = 0;
-			  rows.forEach(row => {
-				if (!row[0]) return;
-				const val = row[0].toString().trim().toUpperCase();
-				if (val === "ID") idCount++;
-				if (val === "CI") ciCount++;
-			  });
-
-			  document.getElementById("idCount").textContent = idCount.toLocaleString();
-			  document.getElementById("ciCount").textContent = ciCount.toLocaleString();
-			};
-
-			if (file.name.endsWith(".csv")) reader.readAsText(file);
-			else reader.readAsArrayBuffer(file);
-		  }
-
-		document.getElementById("fileInput").addEventListener("change", function (event) {
-		const files = event.target.files;
-		if (!files.length) return;
-
-			displayFileName(files[0]);
-			setUploadDateFromFolder(files);
-			setFolderName(files);   
-			countIDandCI(files[0]);
+		  let idCount = 0;
+		  let ciCount = 0;
+		  rows.forEach(row => {
+			if (!row[0]) return;
+			const val = row[0].toString().trim().toUpperCase();
+			if (val === "ID") idCount++;
+			if (val === "CI") ciCount++;
 		  });
+
+		  document.getElementById("idCount").textContent = idCount.toLocaleString();
+		  document.getElementById("ciCount").textContent = ciCount.toLocaleString();
+		};
+
+		if (file.name.endsWith(".csv")) reader.readAsText(file);
+		else reader.readAsArrayBuffer(file);
+	}
+
+	document.getElementById("fileInput").addEventListener("change", function (event) {
+		const files = Array.from(event.target.files);
+		const folderNameDisplay = document.getElementById("folderNameDisplay");
+
+		if (!files.length) {
+		  folderNameDisplay.style.display = "none";
+		  return;
+		}
+
+		let folderName = "Unknown Folder";
+		if (files[0].webkitRelativePath) {
+		  folderName = files[0].webkitRelativePath.split("/")[0];
+		}
+
+		folderNameDisplay.textContent = `📁 Selected Folder: ${folderName}`;
+		folderNameDisplay.style.display = "block";
+
+		const validFiles = files.filter(file => /\.(xlsx|xls|csv)$/i.test(file.name));
+
+		if (validFiles.length === 0) {
+		  alert("No Excel or CSV file found in the selected folder.");
+		  event.target.value = "";
+		  folderNameDisplay.style.display = "none";
+		  return;
+		}
+
+		if (validFiles.length > 1) {
+		  alert("Folder contains multiple files. Please select a folder with only one Excel/CSV file.");
+		  event.target.value = "";
+		  folderNameDisplay.style.display = "none";
+		  return;
+		}
+
+		const selectedFile = validFiles[0];
+		displayFileName(selectedFile);
+		setUploadDateFromFolder(validFiles);
+		setFolderName(validFiles);
+		countIDandCI(selectedFile);
+	});
+</script>
 </script>
 </body>
 </html>
