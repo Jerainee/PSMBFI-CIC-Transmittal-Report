@@ -277,18 +277,21 @@
 
 		if (!file || !folderName) return;
 
-		document.getElementById("fileName").textContent = file.name;
-		document.getElementById("refPeriod").textContent = folderName;
-		document.getElementById("fileRef").textContent = folderName;
+	folderName = folderName.toUpperCase();
 
-		const lastModifiedDate = new Date(file.lastModified);
-		const formattedDate = lastModifiedDate.toLocaleDateString("en-US", {
-		month: "long",
-		day: "numeric",
-		year: "numeric"
+	  const baseName = file.name.replace(/\.[^/.]+$/, "");
+	  document.getElementById("fileName").textContent = `${baseName}.zip.gpg`;
+
+	  document.getElementById("refPeriod").textContent = folderName;
+	  document.getElementById("fileRef").textContent = folderName;
+
+	  const lastModifiedDate = new Date(file.lastModified);
+	  document.getElementById("uploadDate").textContent =
+		lastModifiedDate.toLocaleDateString("en-US", {
+		  month: "long",
+		  day: "numeric",
+		  year: "numeric"
 		});
-		document.getElementById("uploadDate").textContent = formattedDate;
-
 		countIDandCI(file);
 	});
 
@@ -326,3 +329,4 @@
 </script>
 </body>
 </html>
+
