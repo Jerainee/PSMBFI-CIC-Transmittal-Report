@@ -271,11 +271,16 @@
 	});
 
 	document.getElementById("fileInput").addEventListener("change", function (event) {
-		const file = event.target.files[0];
-		const folderInput = document.getElementById("folderName");
-		const folderName = folderInput.value.trim().toUpperCase();
+	  const file = event.target.files[0];
+	  const folderInput = document.getElementById("folderName");
+	  let folderName = folderInput.value.trim();
 
-		if (!file || !folderName) return;
+	  if (!folderName) {
+		alert("Please enter a folder name first before choosing a file.");
+		event.target.value = "";
+		folderInput.focus();
+		return;
+	}
 
 	folderName = folderName.toUpperCase();
 
@@ -292,7 +297,8 @@
 		  day: "numeric",
 		  year: "numeric"
 		});
-		countIDandCI(file);
+
+	  countIDandCI(file);
 	});
 
 	function countIDandCI(file) {
@@ -329,4 +335,5 @@
 </script>
 </body>
 </html>
+
 
