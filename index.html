@@ -182,16 +182,51 @@
       outline: none;
       background-color: #00386d;
     }
+	
+	.signatories {
+	  margin-top: 15px;
+	  font-family: inherit;   /* same font as above */
+	  font-size: inherit;     /* same size as above */
+	}
+
+	.sign-row {
+	  display: flex;
+	  justify-content: space-between;
+	  margin-top: 15px;
+	}
+
+	.sign-col {
+	  width: 45%;
+	}
+
+	.sign-name {
+	  font-weight: bold;  /* same style as typical signature names */
+	}
+
+	.noted-by {
+	  margin-top: 20px;
+	  font-weight: bold;
+	}
+
+	.date-row {
+	  margin-top: 20px;
+	}
+	
+	.date-label {
+	  	font-weight: bold;
+	}
 </style>
 </head>
 <body>
+	<br>
+	<br>
 	<div class="controls">
 		<input type="text" id="folderName" placeholder="📁 Enter Folder Name" />
 		<label for="fileInput" class="btn" id="chooseFileBtn">📄 Choose File</label>
 		<input type="file" id="fileInput" accept=".xlsx, .xls, .csv">
 		<button class="btn" onclick="window.print()">🖨️ Print Transmittal Letter</button>
 	</div>
-
+	
 	<div class="cic-header">
 		<img src="CIC Logo.png" alt="CIC Logo" class="cic-logo">
 		<div class="cic-info">
@@ -245,16 +280,44 @@
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td></tr>
 		<tr><td><strong>FILE REFERENCE DATE</strong></td><td><span id="fileRef"></span></td></tr>
 	</table>
-
-	<div class="signature">
-		<div class="signature-line">
-		  MALECAH M. BARING
-		  <div>Authorized Representative</div>
-		</div><br><br>
-		<div class="signature-line">
-			<div>Date</div>
+	<div class="signatories">
+		<div class="sign-row">
+			<div class="sign-col">
+			<br>
+			<br>
+			<br>
+				<div class="sign-name">Erwin Lloyd Menor</div>
+				<div class="sign-title">Junior Developer</div>
+		</div>
+		<div class="sign-col">
+			<br>
+			<br>
+			<br>
+			<div class="sign-name">Ian Villanueva</div>
+			<div class="sign-title">Primary Contact Person / Loans Supervisor</div>
+		</div>
+	  </div>
+	<div class="noted-by">Noted by:</div>
+	<div class="sign-row">
+		<div class="sign-col">
+			<br>
+			<br>
+			<div class="sign-name">Aurelio Tadlas Jr.</div>
+			<div class="sign-title">Manager, IT Department</div>
+		</div>
+		<div class="sign-col">
+			<br>
+			<br>
+			<div class="sign-name">Ma. Imelda Aculina</div>
+			<div class="sign-title">Authorized Representative / Loans Manager</div>
 		</div>
 	</div>
+	<div class="date-row">
+			<br>
+			<span class="date-label">Date:</span>
+			<span id="currentDate" class="date-value"></span>
+	</div>
+</div>
 
 <script>
 	document.getElementById("chooseFileBtn").addEventListener("click", function (event) {
@@ -331,9 +394,15 @@
 
 	if (file.name.endsWith(".csv")) reader.readAsText(file);
 	else reader.readAsArrayBuffer(file);
+	
+	document.getElementById('currentDate').innerText =
+    new Date().toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    });
+		
 	}
 </script>
 </body>
 </html>
-
-
